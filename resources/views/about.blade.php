@@ -52,21 +52,21 @@
         <div class="bg-white rounded-3xl p-8 sm:p-12 border border-beige shadow-soft">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
                 <div class="md:col-span-4">
-                    <img src="{{ asset('images/doctor-headshot.jpg') }}" alt="Dr. Marcus Vance" class="w-full h-80 object-cover rounded-2xl">
+                    <img src="{{ asset('images/simran.jpeg') }}" alt="Dr. Simran Tripathi" class="w-full h-80 object-cover rounded-2xl">
                 </div>
                 <div class="md:col-span-8 space-y-4">
                     <span class="text-xs font-bold text-sage uppercase tracking-wider">Lead Physiotherapist</span>
-                    <h3 class="font-serif-editorial text-3xl font-bold text-dark-green">Dr. Marcus Vance, DPT, OCS</h3>
+                    <h3 class="font-serif-editorial text-3xl font-bold text-dark-green">Dr. Simran Tripathi, BPT</h3>
                     <p class="text-xs font-semibold text-charcoal-muted">Doctor of Physical Therapy • Board-Certified Orthopedic Specialist</p>
                     <p class="text-xs text-charcoal-muted leading-relaxed">
-                        With over 14 years of clinical experience specializing in spine health, sports rehabilitation, and joint restoration, Dr. Vance has helped over 1,200 individuals return to painless, active living.
+                        With over 5+ years of clinical experience specializing in spine health, sports rehabilitation, and joint restoration, Dr. Simran has helped over 1,20 individuals return to painless, active living.
                     </p>
                     <blockquote class="text-sm font-serif-editorial font-semibold italic text-dark-green border-l-2 border-terracotta pl-4 py-1">
                         "Real physical therapy isn't about giving you a generic sheet of exercises. It's about helping you understand how your body moves so you feel empowered and pain-free for the long term."
                     </blockquote>
                     <div class="pt-2">
                         <button class="open-lead-modal bg-terracotta hover:bg-terracotta-hover text-white text-xs font-semibold px-6 py-3 rounded-full transition-all">
-                            Talk to Dr. Marcus Vance
+                            Talk to Dr. Simran Tripathi
                         </button>
                     </div>
                 </div>
