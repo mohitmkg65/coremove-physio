@@ -94,7 +94,7 @@
                             <span>★★★★★</span>
                             <span class="text-dark-green font-bold text-xs ml-1 bg-amber-500/10 px-2 py-0.5 rounded-md">4.9 / 5.0 Rating</span>
                         </div>
-                        <p class="text-xs text-charcoal-muted mt-0.5">Trusted by 1,200+ recovering patients in our community</p>
+                        <p class="text-xs text-charcoal-muted mt-0.5">Trusted by 1,20+ recovering patients in our community</p>
                     </div>
                 </div>
 
@@ -136,7 +136,7 @@
                     {{-- Floating Glass Badge 2 (Top Left) --}}
                     <div class="hidden lg:flex absolute top-12 -left-8 glass-card py-2.5 px-4 rounded-2xl shadow-soft items-center gap-2.5 border border-white/80">
                         <span class="text-base">🩺</span>
-                        <span class="text-xs font-bold text-dark-green">14+ Yrs Clinical Expertise</span>
+                        <span class="text-xs font-bold text-dark-green">5+ Yrs Clinical Expertise</span>
                     </div>
 
                 </div>
