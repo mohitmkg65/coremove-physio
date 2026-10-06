@@ -88,5 +88,9 @@
     {{-- Functional Appointment Booking Modal --}}
     @include('components.appointment-modal')
 
+    {{-- Floating WhatsApp Corner Button --}}
+    @include('components.whatsapp-float')
+
 </body>
+
 </html>
