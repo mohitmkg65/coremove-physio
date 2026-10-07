@@ -474,31 +474,62 @@
 
 {{-- 9. ACTIVE SPECIAL OFFER SECTION --}}
 @if($activeOffer)
-<section class="py-16 bg-cream">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-gradient-to-br from-dark-green to-forest text-cream rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden border border-forest">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
+<section class="py-16 md:py-24 bg-cream relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-br from-dark-green via-forest to-dark-green text-cream rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden border border-forest/60">
+            
+            {{-- Decorative Ambient Glow Elements --}}
+            <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-terracotta/20 blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-sage/20 blur-3xl pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
                 
-                <div class="md:col-span-8 space-y-4">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-terracotta text-white text-xs font-bold rounded-full">
-                        🎁 Limited Assessment Package
+                {{-- Banner Graphic / Image Column --}}
+                @if($activeOffer->banner_url)
+                    <div class="lg:col-span-5">
+                        <div class="relative rounded-2xl overflow-hidden border border-white/20 shadow-xl group">
+                            <img src="{{ asset($activeOffer->banner_url) }}" alt="{{ $activeOffer->title }}" class="w-full h-56 sm:h-72 object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark-green/90 via-transparent to-transparent"></div>
+                            @if($activeOffer->value)
+                                <div class="absolute bottom-4 left-4 right-4 bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-xl text-center">
+                                    <span class="text-xs font-bold text-cream">🎉 {{ $activeOffer->value }}</span>
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                    <h3 class="font-serif-editorial text-3xl sm:text-4xl font-bold text-cream">{{ $activeOffer->title }}</h3>
-                    <p class="text-sm text-cream/80 leading-relaxed">{{ $activeOffer->description }}</p>
+                @endif
+
+                {{-- Offer Details Column --}}
+                <div class="{{ $activeOffer->banner_url ? 'lg:col-span-7' : 'lg:col-span-12' }} space-y-6">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-terracotta text-white text-xs font-bold uppercase tracking-widest rounded-full shadow-soft">
+                        🎁 Limited Evaluation Package
+                    </div>
                     
-                    @if($activeOffer->value)
-                        <div class="text-sm font-semibold text-sage-light">
-                            ✓ {{ $activeOffer->value }}
+                    <h3 class="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-cream leading-tight">
+                        {{ $activeOffer->title }}
+                    </h3>
+
+                    <p class="text-sm sm:text-base text-cream/80 leading-relaxed font-normal">
+                        {{ $activeOffer->description }}
+                    </p>
+
+                    @if($activeOffer->value && !$activeOffer->banner_url)
+                        <div class="inline-block p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/15 text-sm font-semibold text-sage-light">
+                            ✨ Special Savings: <strong class="text-white">{{ $activeOffer->value }}</strong>
                         </div>
                     @endif
-                </div>
 
-                <div class="md:col-span-4 text-center sm:text-right">
-                    <button class="open-lead-modal w-full sm:w-auto bg-terracotta hover:bg-terracotta-hover text-white font-semibold text-sm px-8 py-4 rounded-full shadow-soft transition-all">
-                        {{ $activeOffer->cta_text }}
-                    </button>
+                    <div class="pt-2 flex flex-col sm:flex-row sm:items-center gap-4">
+                        <button class="open-lead-modal bg-terracotta hover:bg-terracotta-hover text-white font-bold text-sm px-8 py-4 rounded-full shadow-soft hover:shadow-hover transition-all duration-300 transform hover:-translate-y-0.5">
+                            {{ $activeOffer->cta_text }} →
+                        </button>
+                        @if($activeOffer->end_date)
+                            <span class="text-xs font-semibold text-sage-light">⌛ Offer Valid Until {{ $activeOffer->end_date->format('M d, Y') }}</span>
+                        @endif
+                    </div>
+
                     @if($activeOffer->terms)
-                        <p class="text-[10px] text-cream/50 mt-2">{{ $activeOffer->terms }}</p>
+                        <p class="text-[11px] text-cream/50 pt-2 border-t border-forest/60">* {{ $activeOffer->terms }}</p>
                     @endif
                 </div>
 

@@ -12,53 +12,70 @@
             A Better Time to Start Caring For Yourself
         </h1>
         <p class="text-base text-charcoal-muted leading-relaxed max-w-2xl mx-auto">
-            We periodically offer special assessment packages to help new patients take the first step toward understanding their physical health.
+            We periodically offer special assessment packages to help new patients take the first step toward understanding their physical health and living without pain.
         </p>
     </div>
 </section>
 
 <section class="py-16 md:py-24 bg-ivory/40">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         @forelse($offers as $offer)
-            <div class="bg-white rounded-3xl p-8 sm:p-12 border border-beige shadow-soft space-y-6">
-                <div class="flex flex-wrap items-center justify-between gap-4">
-                    <span class="px-3.5 py-1.5 bg-terracotta/10 text-terracotta text-xs font-bold rounded-full">
-                        {{ $offer->offer_type }}
-                    </span>
-                    @if($offer->end_date)
-                        <span class="text-xs font-semibold text-sage">Valid until {{ $offer->end_date->format('M d, Y') }}</span>
+            <div class="bg-white rounded-3xl overflow-hidden border border-beige shadow-soft hover:shadow-hover transition-all duration-300">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                    
+                    @if($offer->banner_url)
+                        <div class="lg:col-span-5 relative h-64 lg:h-auto overflow-hidden bg-beige">
+                            <img src="{{ asset($offer->banner_url) }}" alt="{{ $offer->title }}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark-green/60 via-transparent to-transparent lg:hidden"></div>
+                        </div>
                     @endif
-                </div>
 
-                @if($offer->banner_url)
-                    <div class="rounded-2xl overflow-hidden shadow-sm border border-beige">
-                        <img src="{{ asset($offer->banner_url) }}" alt="{{ $offer->title }}" class="w-full h-48 sm:h-64 object-cover">
+                    <div class="{{ $offer->banner_url ? 'lg:col-span-7' : 'lg:col-span-12' }} p-8 sm:p-12 space-y-6 flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <span class="px-3.5 py-1 bg-terracotta/10 text-terracotta text-xs font-bold uppercase tracking-wider rounded-full">
+                                    {{ $offer->offer_type }}
+                                </span>
+                                @if($offer->end_date)
+                                    <span class="text-xs font-semibold text-sage">⌛ Valid until {{ $offer->end_date->format('M d, Y') }}</span>
+                                @endif
+                            </div>
+
+                            <h2 class="font-serif-editorial text-3xl sm:text-4xl font-bold text-dark-green leading-tight">
+                                {{ $offer->title }}
+                            </h2>
+                            
+                            <p class="text-sm text-charcoal-muted leading-relaxed">
+                                {{ $offer->description }}
+                            </p>
+
+                            @if($offer->value)
+                                <div class="p-4 bg-sage-light/50 rounded-2xl border border-sage/30 text-xs font-semibold text-dark-green flex items-center gap-2">
+                                    <span class="text-base">🎉</span>
+                                    <span>{{ $offer->value }}</span>
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="pt-4 border-t border-beige space-y-3">
+                            <button class="open-lead-modal bg-terracotta hover:bg-terracotta-hover text-white text-xs font-bold px-8 py-4 rounded-full shadow-soft hover:shadow-hover transition-all duration-200">
+                                {{ $offer->cta_text }} →
+                            </button>
+
+                            @if($offer->terms)
+                                <p class="text-[11px] text-charcoal-muted font-normal block">* {{ $offer->terms }}</p>
+                            @endif
+                        </div>
                     </div>
-                @endif
 
-                <h2 class="font-serif-editorial text-3xl font-bold text-dark-green">{{ $offer->title }}</h2>
-                <p class="text-xs text-charcoal-muted leading-relaxed">{{ $offer->description }}</p>
-
-                @if($offer->value)
-                    <div class="p-4 bg-sage-light/40 rounded-2xl border border-sage/30 text-xs font-semibold text-dark-green">
-                        🎉 {{ $offer->value }}
-                    </div>
-                @endif
-
-                @if($offer->terms)
-                    <p class="text-[11px] text-charcoal-muted font-normal">Terms: {{ $offer->terms }}</p>
-                @endif
-
-                <div>
-                    <button class="open-lead-modal bg-terracotta hover:bg-terracotta-hover text-white text-xs font-semibold px-8 py-3.5 rounded-full shadow-soft transition-all">
-                        {{ $offer->cta_text }}
-                    </button>
                 </div>
             </div>
         @empty
-            <div class="text-center py-16 text-charcoal-muted text-sm">
-                No active promotional packages at this time. Please check back soon or call our clinic directly!
+            <div class="bg-white rounded-3xl p-16 text-center text-charcoal-muted border border-beige shadow-sm space-y-3">
+                <span class="text-3xl">🎁</span>
+                <p class="text-base font-semibold text-dark-green">No active promotional packages at this moment.</p>
+                <p class="text-xs text-charcoal-muted">Please call our clinic directly at <strong>+91 9058764970</strong> or check back soon!</p>
             </div>
         @endforelse
 

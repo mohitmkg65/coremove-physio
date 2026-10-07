@@ -15,7 +15,7 @@
                     {{ $leads->total() }} Total
                 </span>
             </div>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Minimal overview of patient leads. Click "View Details" for clinical intake notes & marketing attribution.</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Minimal overview of patient leads. Click eye icon to view full details.</p>
         </div>
 
         {{-- Filter Form --}}
@@ -35,8 +35,8 @@
 
     {{-- Minimal Clean Leads Table --}}
     <div class="bg-white dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs">
+        <div class="w-full overflow-x-auto no-scrollbar">
+            <table class="w-full min-w-[640px] text-left border-collapse text-xs">
                 <thead class="bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-200 dark:border-slate-800">
                     <tr>
                         <th class="py-4 px-6">Patient</th>
@@ -88,10 +88,14 @@
                                 {{ $lead->created_at->format('M d, Y') }}
                             </td>
 
-                            {{-- Action --}}
+                            {{-- Action with Eye Icon --}}
                             <td class="py-4 px-6 text-right">
-                                <a href="{{ route('admin.leads.show', $lead->id) }}" class="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 font-bold transition-colors text-xs">
-                                    View Details →
+                                <a href="{{ route('admin.leads.show', $lead->id) }}" title="View Lead Details" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 font-bold transition-colors text-xs">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                    <span>Details</span>
                                 </a>
                             </td>
                         </tr>

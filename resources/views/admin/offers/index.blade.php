@@ -23,8 +23,8 @@
                 <div>
                     {{-- Banner Image Preview if present --}}
                     @if($offer->banner_url)
-                        <div class="mb-4 rounded-xl overflow-hidden max-h-40 border border-slate-200 dark:border-slate-800">
-                            <img src="{{ asset($offer->banner_url) }}" alt="{{ $offer->title }}" class="w-full h-36 object-cover">
+                        <div class="mb-4 rounded-xl overflow-hidden max-h-48 border border-slate-200 dark:border-slate-800">
+                            <img src="{{ asset($offer->banner_url) }}" alt="{{ $offer->title }}" class="w-full h-40 object-cover">
                         </div>
                     @endif
 
@@ -69,60 +69,88 @@
     </div>
 
     {{-- Create Offer Modal --}}
-    <div id="createOfferModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div id="createOfferModal" class="{{ $errors->any() ? '' : 'hidden' }} fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 max-w-lg w-full space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
                 <h3 class="font-bold text-slate-900 dark:text-slate-100 text-lg">Create Special Clinic Offer</h3>
-                <button onclick="document.getElementById('createOfferModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-100 font-bold">✕</button>
+                <button type="button" onclick="document.getElementById('createOfferModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-100 font-bold">✕</button>
             </div>
 
             <form action="{{ route('admin.offers.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4 text-xs">
                 @csrf
+                
                 <div>
                     <label class="block text-slate-700 dark:text-slate-300 uppercase font-semibold mb-1">Offer Title *</label>
-                    <input type="text" name="title" required placeholder="e.g. 60-Min Initial Assessment Special" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                    <input type="text" name="title" required value="{{ old('title') }}" placeholder="e.g. 60-Min Initial Assessment Special" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                    @error('title')
+                        <p class="text-rose-500 text-[11px] mt-1 font-semibold">⚠️ {{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label class="block text-slate-700 dark:text-slate-300 uppercase font-semibold mb-1">Upload Promotional Banner Image</label>
                     <input type="file" name="banner" accept="image/*" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
-                    <span class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 block">Supports JPEG, PNG, WEBP images (up to 4MB).</span>
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 block">Supports JPG, PNG, WEBP images (up to 4MB).</span>
+                    @error('banner')
+                        <p class="text-rose-500 text-[11px] mt-1 font-semibold">⚠️ {{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label class="block text-slate-700 dark:text-slate-300 uppercase font-semibold mb-1">Offer Category / Type *</label>
-                    <input type="text" name="offer_type" required value="Special Assessment Package" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                    <input type="text" name="offer_type" required value="{{ old('offer_type', 'Special Assessment Package') }}" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                    @error('offer_type')
+                        <p class="text-rose-500 text-[11px] mt-1 font-semibold">⚠️ {{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label class="block text-slate-700 dark:text-slate-300 uppercase font-semibold mb-1">Description *</label>
-                    <textarea name="description" required rows="3" placeholder="Briefly describe what is included..." class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl"></textarea>
+                    <textarea name="description" required rows="3" placeholder="Briefly describe what is included..." class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">{{ old('description') }}</textarea>
+                    @error('description')
+                        <p class="text-rose-500 text-[11px] mt-1 font-semibold">⚠️ {{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label class="block text-slate-700 dark:text-slate-300 uppercase font-semibold mb-1">Savings / Value Badge</label>
-                    <input type="text" name="value" placeholder="e.g. Save 40% on First Visit" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                    <input type="text" name="value" value="{{ old('value') }}" placeholder="e.g. Save 40% on First Visit" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                    @error('value')
+                        <p class="text-rose-500 text-[11px] mt-1 font-semibold">⚠️ {{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-slate-700 dark:text-slate-300 uppercase font-semibold mb-1">Start Date</label>
-                        <input type="date" name="start_date" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                        <input type="date" name="start_date" value="{{ old('start_date') }}" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                        @error('start_date')
+                            <p class="text-rose-500 text-[11px] mt-1 font-semibold">⚠️ {{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label class="block text-slate-700 dark:text-slate-300 uppercase font-semibold mb-1">End Date</label>
-                        <input type="date" name="end_date" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                        <input type="date" name="end_date" value="{{ old('end_date') }}" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                        @error('end_date')
+                            <p class="text-rose-500 text-[11px] mt-1 font-semibold">⚠️ {{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-slate-700 dark:text-slate-300 uppercase font-semibold mb-1">CTA Button Label</label>
-                    <input type="text" name="cta_text" value="See If This Is Right For Me" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                    <input type="text" name="cta_text" value="{{ old('cta_text', 'See If This Is Right For Me') }}" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                    @error('cta_text')
+                        <p class="text-rose-500 text-[11px] mt-1 font-semibold">⚠️ {{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label class="block text-slate-700 dark:text-slate-300 uppercase font-semibold mb-1">Terms & Conditions</label>
-                    <input type="text" name="terms" placeholder="e.g. Valid for new patients only." class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                    <input type="text" name="terms" value="{{ old('terms') }}" placeholder="e.g. Valid for new patients only." class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl">
+                    @error('terms')
+                        <p class="text-rose-500 text-[11px] mt-1 font-semibold">⚠️ {{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="flex items-center gap-2 pt-2">

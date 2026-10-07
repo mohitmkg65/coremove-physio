@@ -36,7 +36,11 @@ class OfferAdminController extends Controller
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
             $filename = 'offer_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('images/offers'), $filename);
+            $targetDir = public_path('images/offers');
+            if (!file_exists($targetDir)) {
+                mkdir($targetDir, 0755, true);
+            }
+            $file->move($targetDir, $filename);
             $data['banner_url'] = '/images/offers/' . $filename;
         }
 
@@ -67,7 +71,11 @@ class OfferAdminController extends Controller
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
             $filename = 'offer_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('images/offers'), $filename);
+            $targetDir = public_path('images/offers');
+            if (!file_exists($targetDir)) {
+                mkdir($targetDir, 0755, true);
+            }
+            $file->move($targetDir, $filename);
             $data['banner_url'] = '/images/offers/' . $filename;
         }
 
