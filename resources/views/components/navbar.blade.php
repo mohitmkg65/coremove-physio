@@ -19,10 +19,10 @@
                 <a href="{{ route('treatments.index') }}" class="text-sm font-medium text-charcoal hover:text-dark-green transition-colors {{ request()->routeIs('treatments.*') ? 'text-dark-green font-semibold' : '' }}">Treatments</a>
                 <a href="{{ route('conditions.index') }}" class="text-sm font-medium text-charcoal hover:text-dark-green transition-colors {{ request()->routeIs('conditions.*') ? 'text-dark-green font-semibold' : '' }}">Conditions</a>
                 <a href="{{ route('about') }}" class="text-sm font-medium text-charcoal hover:text-dark-green transition-colors {{ request()->routeIs('about') ? 'text-dark-green font-semibold' : '' }}">Why Us</a>
-                {{-- <a href="{{ route('offers') }}" class="text-sm font-medium text-charcoal hover:text-dark-green transition-colors flex items-center gap-1.5 {{ request()->routeIs('offers') ? 'text-dark-green font-semibold' : '' }}">
+                <a href="{{ route('offers') }}" class="text-sm font-medium text-charcoal hover:text-dark-green transition-colors flex items-center gap-1.5 {{ request()->routeIs('offers') ? 'text-dark-green font-semibold' : '' }}">
                     Offers
                     <span class="px-2 py-0.5 text-[10px] font-bold bg-terracotta/10 text-terracotta rounded-full">Active</span>
-                </a> --}}
+                </a>
                 <a href="{{ route('contact') }}" class="text-sm font-medium text-charcoal hover:text-dark-green transition-colors {{ request()->routeIs('contact') ? 'text-dark-green font-semibold' : '' }}">Contact</a>
             </nav>
 

@@ -61,10 +61,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Enquiries Module
     Route::get('/enquiries', [EnquiryAdminController::class, 'index'])->name('enquiries.index');
+    Route::get('/enquiries/{enquiry}', [EnquiryAdminController::class, 'show'])->name('enquiries.show');
     Route::post('/enquiries/{enquiry}/status', [EnquiryAdminController::class, 'updateStatus'])->name('enquiries.status');
 
     // Appointments Module
     Route::get('/appointments', [AppointmentAdminController::class, 'index'])->name('appointments.index');
+    Route::get('/appointments/{appointment}', [AppointmentAdminController::class, 'show'])->name('appointments.show');
     Route::post('/appointments/{appointment}/status', [AppointmentAdminController::class, 'updateStatus'])->name('appointments.status');
 
     // Offers Module

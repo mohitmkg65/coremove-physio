@@ -66,4 +66,27 @@ class AdminDashboardTest extends TestCase
             'note' => 'Spoke with patient on phone. Scheduled assessment.',
         ]);
     }
+
+    public function test_admin_scheduling_lead_creates_appointment()
+    {
+        $admin = User::where('email', 'admin@coremovephysio.com')->first();
+        $lead = Lead::first();
+
+        $response = $this->actingAs($admin)->post("/admin/leads/{$lead->id}/status", [
+            'status' => 'Appointment Scheduled',
+            'appointment_date' => now()->addDays(2)->format('Y-m-d'),
+            'appointment_time' => 'Morning (9 AM - 12 PM)',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('leads', [
+            'id' => $lead->id,
+            'status' => 'Appointment Scheduled',
+        ]);
+
+        $this->assertDatabaseHas('appointments', [
+            'phone' => $lead->phone,
+            'status' => 'Confirmed',
+        ]);
+    }
 }

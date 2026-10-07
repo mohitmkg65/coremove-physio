@@ -28,13 +28,15 @@ class Offer extends Model
 
     public function scopeActive(Builder $query): Builder
     {
-        $today = now()->format('Y-m-d');
+        $today = now()->today()->toDateString();
         return $query->where('is_active', true)
             ->where(function ($q) use ($today) {
-                $q->whereNull('start_date')->orWhere('start_date', '<=', $today);
+                $q->whereNull('start_date')
+                  ->orWhere('start_date', '<=', $today);
             })
             ->where(function ($q) use ($today) {
-                $q->whereNull('end_date')->orWhere('end_date', '>=', $today);
+                $q->whereNull('end_date')
+                  ->orWhere('end_date', '>=', $today);
             });
     }
 }

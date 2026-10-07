@@ -31,6 +31,12 @@
                     @endif
                 </div>
 
+                @if($offer->banner_url)
+                    <div class="rounded-2xl overflow-hidden shadow-sm border border-beige">
+                        <img src="{{ asset($offer->banner_url) }}" alt="{{ $offer->title }}" class="w-full h-48 sm:h-64 object-cover">
+                    </div>
+                @endif
+
                 <h2 class="font-serif-editorial text-3xl font-bold text-dark-green">{{ $offer->title }}</h2>
                 <p class="text-xs text-charcoal-muted leading-relaxed">{{ $offer->description }}</p>
 

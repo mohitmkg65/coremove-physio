@@ -22,6 +22,11 @@ class EnquiryAdminController extends Controller
         return view('admin.enquiries.index', compact('enquiries', 'statuses'));
     }
 
+    public function show(Enquiry $enquiry)
+    {
+        return view('admin.enquiries.show', compact('enquiry'));
+    }
+
     public function updateStatus(Request $request, Enquiry $enquiry)
     {
         $request->validate([

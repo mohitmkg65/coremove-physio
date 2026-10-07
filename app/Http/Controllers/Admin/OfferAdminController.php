@@ -20,16 +20,26 @@ class OfferAdminController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'banner_url' => 'nullable|string|max:255',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'offer_type' => 'required|string|max:255',
             'value' => 'nullable|string|max:255',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
             'cta_text' => 'required|string|max:255',
             'terms' => 'nullable|string',
-            'is_active' => 'boolean',
         ]);
 
         $data['is_active'] = $request->has('is_active');
+        $data['start_date'] = $request->filled('start_date') ? $request->start_date : null;
+        $data['end_date'] = $request->filled('end_date') ? $request->end_date : null;
+
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $filename = 'offer_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images/offers'), $filename);
+            $data['banner_url'] = '/images/offers/' . $filename;
+        }
+
         Offer::create($data);
 
         return back()->with('success', 'Special offer created successfully.');
@@ -41,6 +51,7 @@ class OfferAdminController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'banner_url' => 'nullable|string|max:255',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'offer_type' => 'required|string|max:255',
             'value' => 'nullable|string|max:255',
             'start_date' => 'nullable|date',
@@ -50,6 +61,16 @@ class OfferAdminController extends Controller
         ]);
 
         $data['is_active'] = $request->has('is_active');
+        $data['start_date'] = $request->filled('start_date') ? $request->start_date : null;
+        $data['end_date'] = $request->filled('end_date') ? $request->end_date : null;
+
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $filename = 'offer_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images/offers'), $filename);
+            $data['banner_url'] = '/images/offers/' . $filename;
+        }
+
         $offer->update($data);
 
         return back()->with('success', 'Offer updated successfully.');

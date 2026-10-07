@@ -33,6 +33,11 @@ class AppointmentAdminController extends Controller
         return view('admin.appointments.index', compact('appointments', 'statuses'));
     }
 
+    public function show(Appointment $appointment)
+    {
+        return view('admin.appointments.show', compact('appointment'));
+    }
+
     public function updateStatus(Request $request, Appointment $appointment)
     {
         $request->validate([

@@ -7,116 +7,119 @@
 <div class="space-y-6">
     
     {{-- Header & Filter Bar --}}
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-950 p-6 rounded-2xl border border-slate-800">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-slate-950 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
         <div>
             <div class="flex items-center space-x-3">
-                <h3 class="font-bold text-xl text-slate-100">Patient Appointment Requests</h3>
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">
+                <h3 class="font-bold text-xl text-slate-900 dark:text-slate-100">Patient Appointment Requests</h3>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
                     {{ $appointments->total() }} Total
                 </span>
             </div>
-            <p class="text-xs text-slate-400 mt-1">Manage direct patient schedule requests, preferred time slots, and status updates</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Manage direct patient schedule requests, preferred time slots, and status updates</p>
         </div>
 
         {{-- Filters --}}
         <form method="GET" action="{{ route('admin.appointments.index') }}" class="flex flex-wrap items-center gap-3">
-            <select name="status" onchange="this.form.submit()" class="px-3 py-2 bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-xl focus:outline-none">
+            <select name="status" onchange="this.form.submit()" class="px-3.5 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-200 text-xs rounded-xl focus:outline-none focus:border-emerald-500 font-medium">
                 <option value="">All Statuses</option>
                 @foreach($statuses as $st)
                     <option value="{{ $st }}" {{ request('status') == $st ? 'selected' : '' }}>{{ $st }}</option>
                 @endforeach
             </select>
 
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search patient name, phone..." class="px-4 py-2 bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-xl focus:outline-none">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search patient name, phone..." class="px-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-200 text-xs rounded-xl focus:outline-none focus:border-emerald-500">
 
-            <button type="submit" class="px-4 py-2 bg-emerald-500 text-slate-950 text-xs font-bold rounded-xl hover:bg-emerald-400">
+            <button type="submit" class="px-4 py-2 bg-emerald-500 text-slate-950 text-xs font-bold rounded-xl hover:bg-emerald-400 transition-colors">
                 Filter
             </button>
         </form>
     </div>
 
-    {{-- Appointments Table --}}
-    <div class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden">
+    {{-- Minimal Clean Appointments Table --}}
+    <div class="bg-white dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
-                <thead class="bg-slate-900 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
+            <table class="w-full text-left border-collapse text-xs">
+                <thead class="bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-200 dark:border-slate-800">
                     <tr>
-                        <th class="p-4">ID</th>
-                        <th class="p-4">Patient Details</th>
-                        <th class="p-4">Phone / Actions</th>
-                        <th class="p-4">Service Requested</th>
-                        <th class="p-4">Preferred Slot</th>
-                        <th class="p-4">Patient Notes</th>
-                        <th class="p-4">Status</th>
-                        <th class="p-4">Requested Date</th>
-                        <th class="p-4 text-right">Update Stage</th>
+                        <th class="py-4 px-6">Patient Details</th>
+                        <th class="py-4 px-6">Service Requested</th>
+                        <th class="py-4 px-6">Scheduled Date & Slot</th>
+                        <th class="py-4 px-6">Status</th>
+                        <th class="py-4 px-6 text-right">Action</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-700 dark:text-slate-300 font-medium">
                     @forelse($appointments as $appt)
-                        <tr class="hover:bg-slate-900/50 transition-colors">
-                            <td class="p-4 font-mono text-slate-400">#{{ $appt->id }}</td>
-                            
-                            <td class="p-4">
-                                <span class="block font-bold text-slate-100 text-sm">{{ $appt->name }}</span>
-                                <span class="block text-[11px] text-slate-400">{{ $appt->email ?? 'No email provided' }}</span>
-                            </td>
-
-                            <td class="p-4">
-                                <span class="block font-mono text-slate-200 font-bold mb-1">{{ $appt->phone }}</span>
-                                <div class="flex items-center gap-2">
-                                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', $appt->phone) }}" class="text-[10px] text-emerald-400 hover:underline">📞 Call</a>
-                                    <span class="text-slate-600">•</span>
-                                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $appt->phone) }}?text=Hi%20{{ urlencode($appt->name) }},%20this%20is%20CoreMove%20Physiotherapy%20confirming%20your%20appointment%20request." target="_blank" class="text-[10px] text-emerald-400 hover:underline">💬 WhatsApp</a>
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition-colors">
+                            {{-- Patient Info --}}
+                            <td class="py-4 px-6">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-9 h-9 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-sm flex items-center justify-center shrink-0">
+                                        {{ strtoupper(substr($appt->name, 0, 1)) }}
+                                    </div>
+                                    <div>
+                                        <a href="{{ route('admin.appointments.show', $appt->id) }}" class="font-bold text-slate-900 dark:text-slate-100 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm block">
+                                            {{ $appt->name }}
+                                        </a>
+                                        <div class="flex items-center gap-2 mt-0.5">
+                                            <span class="font-mono text-slate-500 dark:text-slate-400 text-[11px]">{{ $appt->phone }}</span>
+                                            <span class="text-slate-300 dark:text-slate-700">•</span>
+                                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $appt->phone) }}?text=Hello%20{{ urlencode($appt->name) }},%20this%20is%20CoreMove%20Physiotherapy%20confirming%20your%20appointment." target="_blank" class="text-[11px] text-emerald-600 dark:text-emerald-400 hover:underline">💬 WhatsApp</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
 
-                            <td class="p-4">
-                                <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-slate-800 text-emerald-400 border border-slate-700">
-                                    {{ $appt->service_id ?? '60-Min Assessment' }}
+                            {{-- Service --}}
+                            <td class="py-4 px-6">
+                                <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+                                    {{ $appt->service_id ?? 'Assessment Package' }}
                                 </span>
                             </td>
 
-                            <td class="p-4">
-                                <div class="font-bold text-slate-100">
-                                    {{ $appt->preferred_date ? $appt->preferred_date->format('D, M d, Y') : 'Flexible Date' }}
+                            {{-- Preferred Date & Time --}}
+                            <td class="py-4 px-6">
+                                <div class="font-bold text-slate-900 dark:text-slate-100">
+                                    📅 {{ $appt->preferred_date ? $appt->preferred_date->format('D, M d, Y') : 'Flexible Date' }}
                                 </div>
-                                <div class="text-[11px] text-slate-400 mt-0.5">
-                                    🕒 {{ $appt->preferred_time ?? 'Anytime' }}
+                                <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                                    🕒 {{ $appt->preferred_time ?? 'Any Time' }}
                                 </div>
                             </td>
 
-                            <td class="p-4 text-slate-400 max-w-xs truncate" title="{{ $appt->message }}">
-                                {{ $appt->message ?? 'No notes provided' }}
-                            </td>
-
-                            <td class="p-4">
-                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase
-                                    @if($appt->status === 'Pending') bg-amber-950 text-amber-400 border border-amber-800
-                                    @elseif($appt->status === 'Confirmed') bg-emerald-950 text-emerald-400 border border-emerald-800
-                                    @elseif($appt->status === 'Completed') bg-blue-950 text-blue-400 border border-blue-800
-                                    @elseif($appt->status === 'Cancelled') bg-rose-950 text-rose-400 border border-rose-800
-                                    @else bg-slate-800 text-slate-300 @endif">
+                            {{-- Status --}}
+                            <td class="py-4 px-6">
+                                <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
+                                    @if($appt->status === 'Pending') bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-800
+                                    @elseif($appt->status === 'Confirmed') bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800
+                                    @elseif($appt->status === 'Completed') bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-400 border border-blue-300 dark:border-blue-800
+                                    @elseif($appt->status === 'Cancelled') bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400 border border-rose-300 dark:border-rose-800
+                                    @else bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 @endif">
                                     {{ $appt->status }}
                                 </span>
                             </td>
 
-                            <td class="p-4 text-slate-400 text-[11px]">{{ $appt->created_at->format('M d, Y H:i') }}</td>
+                            {{-- Action --}}
+                            <td class="py-4 px-6 text-right">
+                                <div class="flex items-center justify-end space-x-2">
+                                    <form action="{{ route('admin.appointments.status', $appt->id) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        <select name="status" onchange="this.form.submit()" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-[11px] rounded-lg focus:outline-none">
+                                            @foreach($statuses as $s)
+                                                <option value="{{ $s }}" {{ $appt->status === $s ? 'selected' : '' }}>{{ $s }}</option>
+                                            @endforeach
+                                        </select>
+                                    </form>
 
-                            <td class="p-4 text-right">
-                                <form action="{{ route('admin.appointments.status', $appt->id) }}" method="POST" class="inline-flex items-center gap-2">
-                                    @csrf
-                                    <select name="status" onchange="this.form.submit()" class="px-2.5 py-1 bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-xl focus:outline-none focus:border-emerald-500">
-                                        @foreach($statuses as $s)
-                                            <option value="{{ $s }}" {{ $appt->status === $s ? 'selected' : '' }}>{{ $s }}</option>
-                                        @endforeach
-                                    </select>
-                                </form>
+                                    <a href="{{ route('admin.appointments.show', $appt->id) }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 font-bold transition-colors text-xs">
+                                        Details →
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="p-8 text-center text-slate-500">
+                            <td colspan="5" class="py-12 text-center text-slate-400">
                                 No appointment requests found matching your criteria.
                             </td>
                         </tr>
@@ -125,7 +128,7 @@
             </table>
         </div>
 
-        <div class="p-4 border-t border-slate-800">
+        <div class="p-4 border-t border-slate-200 dark:border-slate-800">
             {{ $appointments->links() }}
         </div>
     </div>
